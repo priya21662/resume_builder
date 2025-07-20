@@ -1,0 +1,1071 @@
+import { Switch, Route } from "wouter";
+import { queryClient } from "./lib/queryClient";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "@/components/ui/toaster";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import Home from "@/pages/home";
+import Builder from "@/pages/builder";
+import NotFound from "@/pages/not-found";
+
+function Router() {
+  return (
+    <Switch>
+      <Route path="/" component={Home} />
+      <Route path="/builder/:userType?" component={Builder} />
+      <Route component={NotFound} />
+    </Switch>
+  );
+}
+
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Router />
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+}
+
+export default App;
+import { FileText } from "lucide-react";
+import { Link } from "wouter";
+import { useTranslation } from 'react-i18next';
+import HeroSection from "@/components/hero-section";
+import ResumeUses from "@/components/resume-uses";
+import QuickTips from "@/components/quick-tips";
+import UserTypeSelection from "@/components/user-type-selection";
+import FAQSection from "@/components/faq-section";
+import LanguageSelector from "@/components/language-selector";
+import AccessibilityToolbar from "@/components/accessibility-toolbar";
+
+export default function Home() {
+  const { t } = useTranslation();
+  
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header Navigation */}
+      <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <Link href="/" className="flex items-center space-x-3">
+              <div className="bg-primary rounded-lg p-2">
+                <FileText className="text-white text-xl" />
+              </div>
+              <h1 className="text-xl font-semibold text-gray-900">{t('header.title')}</h1>
+            </Link>
+            <nav className="hidden md:flex items-center space-x-6">
+              <a href="#basics" className="text-gray-600 hover:text-primary transition-colors">Resume Basics</a>
+              <a href="#tips" className="text-gray-600 hover:text-primary transition-colors">Tips</a>
+              <LanguageSelector />
+              <Link href="/builder" className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                {t('nav.getStarted')}
+              </Link>
+            </nav>
+          </div>
+        </div>
+      </header>
+
+      <main id="main-content">
+        <HeroSection />
+        <ResumeUses />
+        <QuickTips />
+        <UserTypeSelection />
+      </main>
+      <FAQSection />
+
+      {/* Accessibility Toolbar */}
+      <AccessibilityToolbar />
+
+      {/* Skip to main content link */}
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-white py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="md:col-span-2">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="bg-primary rounded-lg p-2">
+                  <FileText className="text-white text-xl" />
+                </div>
+                <h1 className="text-xl font-semibold">ResumeBuilder Pro</h1>
+              </div>
+              <p className="text-gray-400 mb-4">
+                Empowering job seekers with professional resume building tools and educational resources to land their dream careers.
+              </p>
+            </div>
+            
+            <div>
+              <h6 className="font-semibold mb-4">Resources</h6>
+              <ul className="space-y-2 text-gray-400">
+                <li><a href="#" className="hover:text-white transition-colors">Resume Templates</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Cover Letter Guide</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Interview Tips</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Career Advice</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h6 className="font-semibold mb-4">Support</h6>
+              <ul className="space-y-2 text-gray-400">
+                <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Contact Us</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+            <p>&copy; 2024 ResumeBuilder Pro. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+
+export default function HeroSection() {
+  return (
+    <section className="bg-gradient-to-br from-blue-50 to-indigo-100 py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center animate-fade-in">
+          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+            Build Your Professional Resume with <span className="text-primary">Confidence</span>
+          </h2>
+          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            A resume is your professional story condensed into one powerful document. It showcases your skills, 
+            experience, and achievements to potential employers, making it your ticket to career opportunities.
+          </p>
+          
+          {/* Quick Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
+            <div className="bg-white rounded-xl p-6 shadow-lg animate-slide-up" style={{ animationDelay: '0.1s' }}>
+              <div className="text-3xl font-bold text-primary mb-2">78%</div>
+              <div className="text-gray-600">of employers prefer structured resumes</div>
+            </div>
+            <div className="bg-white rounded-xl p-6 shadow-lg animate-slide-up" style={{ animationDelay: '0.2s' }}>
+              <div className="text-3xl font-bold text-accent mb-2">6 sec</div>
+              <div className="text-gray-600">average time recruiters spend on first review</div>
+            </div>
+            <div className="bg-white rounded-xl p-6 shadow-lg animate-slide-up" style={{ animationDelay: '0.3s' }}>
+              <div className="text-3xl font-bold" style={{ color: 'hsl(14, 100%, 57%)' }}>95%</div>
+              <div className="text-gray-600">of jobs require a resume submission</div>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/builder">
+              <Button size="lg" className="px-8 py-4 text-lg font-semibold shadow-lg hover:scale-105 transition-transform">
+                Start Building Now
+              </Button>
+            </Link>
+            <Button variant="outline" size="lg" className="px-8 py-4 text-lg font-semibold">
+              <a href="#basics">Learn Resume Basics</a>
+            </Button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+import { useState, useEffect } from "react";
+import { Settings, Volume2, VolumeX, Mic, MicOff, Eye, Keyboard, Type, Contrast } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { AccessibilityManager, AccessibilitySettings, DEFAULT_A11Y_SETTINGS } from "@/lib/accessibility";
+import { VoiceToTextService, TextToSpeechService } from "@/lib/voice-to-text";
+
+interface AccessibilityToolbarProps {
+  onSettingsChange?: (settings: AccessibilitySettings) => void;
+}
+
+export default function AccessibilityToolbar({ onSettingsChange }: AccessibilityToolbarProps) {
+  const [settings, setSettings] = useState<AccessibilitySettings>(DEFAULT_A11Y_SETTINGS);
+  const [voiceService] = useState(() => new VoiceToTextService());
+  const [speechService] = useState(() => new TextToSpeechService());
+  const [isListening, setIsListening] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+
+  useEffect(() => {
+    // Detect user preferences on load
+    const detected = AccessibilityManager.detectPreferences();
+    const newSettings = { ...DEFAULT_A11Y_SETTINGS, ...detected };
+    setSettings(newSettings);
+    AccessibilityManager.applyAccessibilitySettings(newSettings);
+  }, []);
+
+  useEffect(() => {
+    AccessibilityManager.applyAccessibilitySettings(settings);
+    onSettingsChange?.(settings);
+  }, [settings, onSettingsChange]);
+
+  const updateSetting = (key: keyof AccessibilitySettings, value: boolean) => {
+    setSettings(prev => ({ ...prev, [key]: value }));
+  };
+
+  const toggleVoiceInput = () => {
+    if (!voiceService.isSupported()) {
+      AccessibilityManager.announceToScreenReader("Voice input is not supported in your browser", "assertive");
+      return;
+    }
+
+    if (isListening) {
+      voiceService.stopListening();
+      setIsListening(false);
+      AccessibilityManager.announceToScreenReader("Voice input stopped", "polite");
+    } else {
+      voiceService.startListening(
+        (text) => {
+          // Find active input and fill it
+          const activeElement = document.activeElement as HTMLInputElement | HTMLTextAreaElement;
+          if (activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA')) {
+            activeElement.value = (activeElement.value + ' ' + text).trim();
+            activeElement.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+        },
+        (error) => {
+          AccessibilityManager.announceToScreenReader(Voice input error: ${error}, "assertive");
+          setIsListening(false);
+        }
+      );
+      setIsListening(true);
+      AccessibilityManager.announceToScreenReader("Voice input started. Start speaking to fill the active field.", "polite");
+    }
+  };
+
+  const toggleTextToSpeech = () => {
+    if (!speechService.isSupported()) {
+      AccessibilityManager.announceToScreenReader("Text-to-speech is not supported in your browser", "assertive");
+      return;
+    }
+
+    if (isSpeaking) {
+      speechService.stop();
+      setIsSpeaking(false);
+      AccessibilityManager.announceToScreenReader("Speech stopped", "polite");
+    } else {
+      // Read the current page content
+      const activeElement = document.activeElement as HTMLElement;
+      let textToRead = "";
+
+      if (activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA')) {
+        textToRead = (activeElement as HTMLInputElement).value || "This field is empty";
+      } else {
+        // Read the main content
+        const mainContent = document.querySelector('main') || document.body;
+        const headings = mainContent.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        const labels = mainContent.querySelectorAll('label');
+        
+        textToRead = Array.from([...headings, ...labels])
+          .map(el => el.textContent)
+          .filter(text => text && text.trim().length > 0)
+          .join('. ');
+      }
+
+      if (textToRead) {
+        speechService.speak(textToRead);
+        setIsSpeaking(true);
+        AccessibilityManager.announceToScreenReader("Reading content aloud", "polite");
+      }
+    }
+  };
+
+  return (
+    <div className="fixed bottom-4 right-4 z-50">
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            size="lg"
+            className="rounded-full shadow-lg bg-white dark:bg-gray-800 border-2"
+            aria-label="Open accessibility settings"
+          >
+            <Settings className="w-5 h-5" />
+            <span className="sr-only">Accessibility Settings</span>
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-80" align="end">
+          <Card className="border-0 shadow-none">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-medium">Accessibility Settings</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {/* Voice Controls */}
+              <div className="space-y-3">
+                <h4 className="text-sm font-medium">Voice Controls</h4>
+                <div className="flex gap-2">
+                  <Button
+                    size="sm"
+                    variant={isListening ? "default" : "outline"}
+                    onClick={toggleVoiceInput}
+                    disabled={!voiceService.isSupported()}
+                    className="flex-1"
+                    aria-label={isListening ? "Stop voice input" : "Start voice input"}
+                  >
+                    {isListening ? <MicOff className="w-4 h-4 mr-1" /> : <Mic className="w-4 h-4 mr-1" />}
+                    {isListening ? "Stop" : "Voice Input"}
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant={isSpeaking ? "default" : "outline"}
+                    onClick={toggleTextToSpeech}
+                    disabled={!speechService.isSupported()}
+                    className="flex-1"
+                    aria-label={isSpeaking ? "Stop reading" : "Read aloud"}
+                  >
+                    {isSpeaking ? <VolumeX className="w-4 h-4 mr-1" /> : <Volume2 className="w-4 h-4 mr-1" />}
+                    {isSpeaking ? "Stop" : "Read"}
+                  </Button>
+                </div>
+              </div>
+
+              {/* Visual Settings */}
+              <div className="space-y-3">
+                <h4 className="text-sm font-medium">Visual Settings</h4>
+                
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="high-contrast" className="flex items-center text-sm">
+                    <Contrast className="w-4 h-4 mr-2" />
+                    High Contrast
+                  </Label>
+                  <Switch
+                    id="high-contrast"
+                    checked={settings.highContrast}
+                    onCheckedChange={(checked) => updateSetting('highContrast', checked)}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="large-text" className="flex items-center text-sm">
+                    <Type className="w-4 h-4 mr-2" />
+                    Large Text
+                  </Label>
+                  <Switch
+                    id="large-text"
+                    checked={settings.largeText}
+                    onCheckedChange={(checked) => updateSetting('largeText', checked)}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="reduced-motion" className="flex items-center text-sm">
+                    <Eye className="w-4 h-4 mr-2" />
+                    Reduced Motion
+                  </Label>
+                  <Switch
+                    id="reduced-motion"
+                    checked={settings.reducedMotion}
+                    onCheckedChange={(checked) => updateSetting('reducedMotion', checked)}
+                  />
+                </div>
+              </div>
+
+              {/* Navigation Settings */}
+              <div className="space-y-3">
+                <h4 className="text-sm font-medium">Navigation</h4>
+                
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="keyboard-only" className="flex items-center text-sm">
+                    <Keyboard className="w-4 h-4 mr-2" />
+                    Keyboard Only
+                  </Label>
+                  <Switch
+                    id="keyboard-only"
+                    checked={settings.keyboardOnly}
+                    onCheckedChange={(checked) => updateSetting('keyboardOnly', checked)}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="screen-reader" className="flex items-center text-sm">
+                    <Volume2 className="w-4 h-4 mr-2" />
+                    Screen Reader Mode
+                  </Label>
+                  <Switch
+                    id="screen-reader"
+                    checked={settings.screenReader}
+                    onCheckedChange={(checked) => updateSetting('screenReader', checked)}
+                  />
+                </div>
+              </div>
+
+              {/* Instructions */}
+              <div className="pt-3 border-t">
+                <p className="text-xs text-gray-600 dark:text-gray-400">
+                  Voice commands: "next step", "previous step", "save resume". 
+                  Focus any text field and use voice input to dictate content.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </PopoverContent>
+      </Popover>
+    </div>
+  );
+}
+import { useState, useEffect } from "react";
+import { MessageCircle, ArrowRight, ArrowLeft, CheckCircle, Lightbulb } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import ResumePreview from "@/components/resume-preview";
+import { AccessibilityManager } from "@/lib/accessibility";
+import type { ResumeData, ExperienceItem, EducationItem, SkillsCategory } from "@shared/schema";
+import { generateId } from "@/lib/resume-types";
+
+interface NarrativeBuilderProps {
+  resumeData: ResumeData;
+  setResumeData: (data: ResumeData) => void;
+}
+
+interface NarrativeStep {
+  id: string;
+  title: string;
+  question: string;
+  prompt: string;
+  placeholder: string;
+  tips: string[];
+  completed: boolean;
+}
+
+const NARRATIVE_STEPS: NarrativeStep[] = [
+  {
+    id: 'introduction',
+    title: 'Tell Me About Yourself',
+    question: 'Let\'s start with who you are and what you\'re looking for',
+    prompt: 'I\'d love to learn about you! Tell me your name, what kind of work you do or want to do, and what makes you excited about your career. Don\'t worry about making it perfect - just speak naturally about yourself.',
+    placeholder: 'Hi! My name is... I\'m interested in... What I love about my work is...',
+    tips: [
+      'Speak naturally, as if you\'re talking to a friend',
+      'Include your name and current situation',
+      'Mention what type of role you\'re seeking',
+      'Share what motivates you professionally'
+    ],
+    completed: false
+  },
+  {
+    id: 'experience',
+    title: 'Your Work Story',
+    question: 'Tell me about your work experience and achievements',
+    prompt: 'Now let\'s talk about your work experience. Think about your current or most recent job, internships, volunteer work, or even school projects. What did you do? What are you proud of? What challenges did you overcome? I\'ll help organize this into a professional format.',
+    placeholder: 'At my current job... One thing I\'m really proud of is... I learned how to... The biggest challenge I faced was...',
+    tips: [
+      'Include any work experience, even part-time or volunteer',
+      'Focus on what you accomplished, not just what you did',
+      'Mention specific results or improvements you made',
+      'Don\'t forget internships, projects, or leadership roles'
+    ],
+    completed: false
+  },
+  {
+    id: 'education',
+    title: 'Your Learning Journey',
+    question: 'What education, training, or learning experiences have shaped you?',
+    prompt: 'Education comes in many forms! Tell me about your formal education, but also any courses, certifications, workshops, or self-learning that\'s important to you. What did you study? What did you enjoy most? Any special achievements or relevant coursework?',
+    placeholder: 'I studied... at... My favorite courses were... I also learned... outside of school...',
+    tips: [
+      'Include all levels of education that are relevant',
+      'Mention any honors, high GPA, or special recognition',
+      'Include online courses, certifications, or workshops',
+      'Add relevant coursework if you\'re a recent graduate'
+    ],
+    completed: false
+  },
+  {
+    id: 'skills',
+    title: 'Your Strengths and Skills',
+    question: 'What are you good at? What skills make you unique?',
+    prompt: 'Let\'s talk about your skills! Think broadly - technical skills, software you know, languages you speak, interpersonal skills, and anything else you\'re good at. What do people often ask you for help with? What comes naturally to you?',
+    placeholder: 'I\'m really good at... People often ask me to help with... I\'m fluent in... I know how to use...',
+    tips: [
+      'Include both technical and soft skills',
+      'Mention software, tools, or technologies you know',
+      'Add languages you speak (and your level)',
+      'Think about skills from all areas of your life'
+    ],
+    completed: false
+  }
+];
+
+export default function NarrativeBuilder({ resumeData, setResumeData }: NarrativeBuilderProps) {
+  const [currentStep, setCurrentStep] = useState(0);
+  const [steps, setSteps] = useState(NARRATIVE_STEPS);
+  const [responses, setResponses] = useState<Record<string, string>>({});
+  const [currentResponse, setCurrentResponse] = useState('');
+
+  useEffect(() => {
+    // Announce step changes for screen readers
+    const step = steps[currentStep];
+    AccessibilityManager.announceToScreenReader(
+      Step ${currentStep + 1} of ${steps.length}: ${step.title}. ${step.question},
+      'polite'
+    );
+  }, [currentStep, steps]);
+
+  const parsePersonalInfo = (text: string) => {
+    // Simple pattern matching to extract personal information
+    const patterns = {
+      name: /(?:my name is|i'm|i am)\s+([a-zA-Z\s]+?)(?:\.|,|and|$)/i,
+      email: /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/i,
+      phone: /(\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4})/,
+    };
+
+    const updates: any = {};
+    
+    const nameMatch = text.match(patterns.name);
+    if (nameMatch) {
+      const fullName = nameMatch[1].trim();
+      const nameParts = fullName.split(' ');
+      if (nameParts.length >= 2) {
+        updates.firstName = nameParts[0];
+        updates.lastName = nameParts.slice(1).join(' ');
+      } else {
+        updates.firstName = fullName;
+      }
+    }
+
+    const emailMatch = text.match(patterns.email);
+    if (emailMatch) {
+      updates.email = emailMatch[1];
+    }
+
+    const phoneMatch = text.match(patterns.phone);
+    if (phoneMatch) {
+      updates.phone = phoneMatch[1];
+    }
+
+    return updates;
+  };
+
+  const parseExperience = (text: string): ExperienceItem[] => {
+    // Simple parsing for experience - in a real app, this would be more sophisticated
+    const experiences: ExperienceItem[] = [];
+    
+    // Look for job titles and companies
+    const jobPatterns = [
+      /(?:at|work at|working at|job at)\s+([^.,!?]+?)(?:\.|,|as|where|$)/gi,
+      /(?:as a|as an|working as)\s+([^.,!?]+?)(?:\.|,|at|where|$)/gi,
+    ];
+
+    let match;
+    const exp: ExperienceItem = {
+      id: generateId(),
+      jobTitle: '',
+      company: '',
+      location: '',
+      startDate: '',
+      endDate: '',
+      current: false,
+      description: text.substring(0, 200) + (text.length > 200 ? '...' : ''),
+      achievements: [],
+    };
+
+    // Try to extract job title and company
+    jobPatterns.forEach(pattern => {
+      while ((match = pattern.exec(text)) !== null) {
+        if (!exp.company && match[1].length < 50) {
+          exp.company = match[1].trim();
+        }
+      }
+    });
+
+    if (text.length > 20) {
+      experiences.push(exp);
+    }
+
+    return experiences;
+  };
+
+  const parseEducation = (text: string): EducationItem[] => {
+    const education: EducationItem[] = [];
+    
+    // Look for education keywords
+    const eduPatterns = [
+      /(?:studied|study|degree in|major in|graduated from)\s+([^.,!?]+?)(?:\.|,|at|from|$)/gi,
+      /(?:at|from)\s+([^.,!?]+?)\s*(?:university|college|school|institute)/gi,
+    ];
+
+    let match;
+    const edu: EducationItem = {
+      id: generateId(),
+      institution: '',
+      degree: '',
+      field: '',
+      graduationDate: '',
+      gpa: '',
+    };
+
+    eduPatterns.forEach(pattern => {
+      while ((match = pattern.exec(text)) !== null) {
+        if (match[1].length < 50) {
+          if (!edu.field && /studied|study|degree|major/.test(match[0])) {
+            edu.field = match[1].trim();
+          } else if (!edu.institution) {
+            edu.institution = match[1].trim();
+          }
+        }
+      }
+    });
+
+    if (edu.institution || edu.field) {
+      education.push(edu);
+    }
+
+    return education;
+  };
+
+  const parseSkills = (text: string): SkillsCategory[] => {
+    const skillsCategories: SkillsCategory[] = [];
+    
+    // Extract skills from text
+    const skillKeywords = [
+      'programming', 'coding', 'software', 'excel', 'word', 'powerpoint',
+      'javascript', 'python', 'java', 'react', 'html', 'css',
+      'communication', 'leadership', 'teamwork', 'problem solving',
+      'spanish', 'french', 'chinese', 'english'
+    ];
+
+    const foundSkills: string[] = [];
+    const lowerText = text.toLowerCase();
+
+    skillKeywords.forEach(skill => {
+      if (lowerText.includes(skill)) {
+        foundSkills.push(skill.charAt(0).toUpperCase() + skill.slice(1));
+      }
+    });
+
+    // Group skills by category
+    const technicalSkills = foundSkills.filter(skill => 
+      ['programming', 'coding', 'software', 'excel', 'word', 'powerpoint', 'javascript', 'python', 'java', 'react', 'html', 'css']
+        .some(tech => skill.toLowerCase().includes(tech))
+    );
+
+    const softSkills = foundSkills.filter(skill => 
+      ['communication', 'leadership', 'teamwork', 'problem solving']
+        .some(soft => skill.toLowerCase().includes(soft))
+    );
+
+    const languages = foundSkills.filter(skill => 
+      ['spanish', 'french', 'chinese', 'english']
+        .some(lang => skill.toLowerCase().includes(lang))
+    );
+
+    if (technicalSkills.length > 0) {
+      skillsCategories.push({
+        id: generateId(),
+        category: 'Technical Skills',
+        skills: technicalSkills
+      });
+    }
+
+    if (softSkills.length > 0) {
+      skillsCategories.push({
+        id: generateId(),
+        category: 'Soft Skills',
+        skills: softSkills
+      });
+    }
+
+    if (languages.length > 0) {
+      skillsCategories.push({
+        id: generateId(),
+        category: 'Languages',
+        skills: languages
+      });
+    }
+
+    return skillsCategories;
+  };
+
+  const processResponse = (stepId: string, response: string) => {
+    let updates: Partial<ResumeData> = {};
+
+    switch (stepId) {
+      case 'introduction':
+        const personalInfo = parsePersonalInfo(response);
+        updates.personalInfo = { ...resumeData.personalInfo, ...personalInfo };
+        if (response.length > 50) {
+          updates.professionalSummary = response.substring(0, 300) + (response.length > 300 ? '...' : '');
+        }
+        break;
+
+      case 'experience':
+        const experiences = parseExperience(response);
+        updates.experience = [...resumeData.experience, ...experiences];
+        break;
+
+      case 'education':
+        const education = parseEducation(response);
+        updates.education = [...resumeData.education, ...education];
+        break;
+
+      case 'skills':
+        const skills = parseSkills(response);
+        updates.skills = [...resumeData.skills, ...skills];
+        break;
+    }
+
+    setResumeData({ ...resumeData, ...updates });
+  };
+
+  const nextStep = () => {
+    if (currentResponse.trim()) {
+      const step = steps[currentStep];
+      processResponse(step.id, currentResponse);
+      
+      // Mark step as completed
+      const updatedSteps = [...steps];
+      updatedSteps[currentStep].completed = true;
+      setSteps(updatedSteps);
+      
+      // Save response
+      setResponses(prev => ({ ...prev, [step.id]: currentResponse }));
+      
+      AccessibilityManager.announceToScreenReader(Step completed. ${currentResponse.length > 100 ? 'Your detailed response has been processed.' : 'Response saved.'}, 'polite');
+    }
+
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(currentStep + 1);
+      setCurrentResponse('');
+    }
+  };
+
+  const prevStep = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1);
+      const prevStepId = steps[currentStep - 1].id;
+      setCurrentResponse(responses[prevStepId] || '');
+    }
+  };
+
+  const currentStepData = steps[currentStep];
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="bg-gray-50 rounded-2xl p-8">
+        {/* Progress Header */}
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-semibold text-gray-900">
+            Tell Your Story - Step {currentStep + 1} of {steps.length}
+          </h2>
+          <div className="flex space-x-2">
+            {steps.map((step, index) => (
+              <div
+                key={step.id}
+                className={w-8 h-2 rounded-full transition-colors ${
+                  step.completed ? 'bg-green-500' : 
+                  index === currentStep ? 'bg-primary' : 'bg-gray-300'
+                }}
+                aria-label={Step ${index + 1}: ${step.completed ? 'completed' : index === currentStep ? 'current' : 'upcoming'}}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Conversation Section */}
+          <div className="lg:col-span-2">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center text-lg">
+                  <MessageCircle className="w-5 h-5 mr-2" />
+                  {currentStepData.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Question */}
+                <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-4">
+                  <h3 className="font-medium text-blue-900 dark:text-blue-100 mb-2">
+                    {currentStepData.question}
+                  </h3>
+                  <p className="text-blue-800 dark:text-blue-200 text-sm leading-relaxed">
+                    {currentStepData.prompt}
+                  </p>
+                </div>
+
+                {/* Tips */}
+                <Alert>
+                  <Lightbulb className="h-4 w-4" />
+                  <AlertDescription>
+                    <strong>Helpful tips:</strong>
+                    <ul className="mt-2 space-y-1">
+                      {currentStepData.tips.map((tip, index) => (
+                        <li key={index} className="text-sm">• {tip}</li>
+                      ))}
+                    </ul>
+                  </AlertDescription>
+                </Alert>
+
+                {/* Response Area */}
+                <div>
+                  <label htmlFor="narrative-response" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Your Response
+                  </label>
+                  <Textarea
+                    id="narrative-response"
+                    value={currentResponse}
+                    onChange={(e) => setCurrentResponse(e.target.value)}
+                    placeholder={currentStepData.placeholder}
+                    rows={6}
+                    className="resize-none"
+                    aria-describedby="response-help"
+                  />
+                  <p id="response-help" className="mt-2 text-sm text-gray-500">
+                    Speak naturally about your experience. I'll help organize it into a professional resume format.
+                  </p>
+                </div>
+
+                {/* Navigation */}
+                <div className="flex justify-between">
+                  <Button
+                    variant="outline"
+                    onClick={prevStep}
+                    disabled={currentStep === 0}
+                    data-voice="previous"
+                  >
+                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    Previous
+                  </Button>
+                  
+                  <Button
+                    onClick={nextStep}
+                    disabled={!currentResponse.trim()}
+                    data-voice="next"
+                  >
+                    {currentStep === steps.length - 1 ? (
+                      <>
+                        <CheckCircle className="w-4 h-4 mr-2" />
+                        Complete Story
+                      </>
+                    ) : (
+                      <>
+                        Continue
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Live Preview */}
+          <div className="sticky top-24">
+            <ResumePreview resumeData={resumeData} />
+            
+            {/* Progress Summary */}
+            <Card className="mt-4">
+              <CardHeader>
+                <CardTitle className="text-sm">Your Progress</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {steps.map((step, index) => (
+                  <div key={step.id} className="flex items-center text-sm">
+                    {step.completed ? (
+                      <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                    ) : index === currentStep ? (
+                      <div className="w-4 h-4 border-2 border-primary rounded-full mr-2" />
+                    ) : (
+                      <div className="w-4 h-4 border-2 border-gray-300 rounded-full mr-2" />
+                    )}
+                    <span className={step.completed ? 'text-green-700' : index === currentStep ? 'text-primary font-medium' : 'text-gray-500'}>
+                      {step.title}
+                    </span>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(20, 14.3%, 4.1%);
+  --muted: hsl(60, 4.8%, 95.9%);
+  --muted-foreground: hsl(25, 5.3%, 44.7%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(20, 14.3%, 4.1%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(20, 14.3%, 4.1%);
+  --border: hsl(20, 5.9%, 90%);
+  --input: hsl(20, 5.9%, 90%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(60, 4.8%, 95.9%);
+  --secondary-foreground: hsl(24, 9.8%, 10%);
+  --accent: hsl(142, 76%, 36%);
+  --accent-foreground: hsl(60, 9.1%, 97.8%);
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(60, 9.1%, 97.8%);
+  --ring: hsl(207, 90%, 54%);
+  --radius: 0.5rem;
+  --warning: hsl(32, 95%, 44%);
+  --success: hsl(142, 76%, 36%);
+}
+
+.dark {
+  --background: hsl(240, 10%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 3.7%, 15.9%);
+  --muted-foreground: hsl(240, 5%, 64.9%);
+  --popover: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 3.7%, 15.9%);
+  --input: hsl(240, 3.7%, 15.9%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(240, 3.7%, 15.9%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(240, 4.9%, 83.9%);
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+  
+  .animate-bounce-gentle {
+    animation: bounceGentle 2s infinite;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes bounceGentle {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  60% { transform: translateY(-5px); }
+}
+
+/* Accessibility Enhancements */
+.high-contrast {
+  --foreground: hsl(0, 0%, 0%);
+  --background: hsl(0, 0%, 100%);
+  --border: hsl(0, 0%, 0%);
+  --primary: hsl(240, 100%, 50%);
+  --accent: hsl(120, 100%, 25%);
+  --destructive: hsl(0, 100%, 50%);
+  --warning: hsl(30, 100%, 30%);
+}
+
+.large-text {
+  font-size: 1.125rem;
+}
+
+.large-text h1 { font-size: 2.5rem; }
+.large-text h2 { font-size: 2rem; }
+.large-text h3 { font-size: 1.75rem; }
+.large-text h4 { font-size: 1.5rem; }
+.large-text button { font-size: 1.125rem; }
+.large-text input, .large-text textarea { font-size: 1.125rem; }
+
+.keyboard-only *:focus {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.motion-reduce * {
+  animation-duration: 0.01ms !important;
+  transition-duration: 0.01ms !important;
+}
+
+/* Skip to main content link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  padding: 8px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Colorblind-safe focus indicators */
+.focus-visible:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* High contrast mode adjustments */
+@media (prefers-contrast: high) {
+  :root {
+    --border: hsl(0, 0%, 20%);
+    --ring: hsl(0, 0%, 0%);
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
